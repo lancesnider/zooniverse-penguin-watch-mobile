@@ -1,51 +1,41 @@
-import React from 'react'
-import { View, Text, TouchableHighlight, StyleSheet } from 'react-native'
+import React, {Component} from 'react'
+import { View, Text, TouchableHighlight, StyleSheet, Image, Dimensions } from 'react-native'
 import NavigationMenu from './components/navigation_menu'
 import { CheckBox } from 'react-native-elements'
+import ImageZoom from 'react-native-image-pan-zoom'
+import classifyImage01 from './images/classify01.jpg'
+import Crosshair from './components/crosshair'
+import generateUUID from 'uuid/v4'
 
-const styles = StyleSheet.create({
-  redButtons: {
-    color: 'red',
-    padding: 16,
-    textDecorationLine: 'underline'
-  },
-  saveButtons: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
-    margin: 4,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  saveButtonsText: {
-    color: 'white',
-    fontSize: 24
-  },
-  classifierButtons: {
-    flex: 1,
-    height: 80,
-    backgroundColor: 'gray',
-    margin: 2,
-    justifyContent: 'flex-end',
-    borderWidth: 2,
-    borderColor: 'gray'
-  },
-  classifierButtonsTextContainer: {
-    padding: 4,
-    backgroundColor: 'rgba(0,0,0,0.3)'
-  },
-  classifierButtonsText: {
-    color: 'white',
-    fontSize: 12
+export default class ClassifyScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      talkAfter: false,
+      classifications: []
+    }
   }
-})
 
-export default class ClassifyScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Welcome',
+  handleImageClick = (e) => {
+
+    const newClassification = {
+      id: generateUUID(),
+      type: 'adult',
+      x: e.locationX,
+      y: e.locationY
+    }
+
+    this.setState(prevState => ({
+      classifications: [...prevState.classifications, newClassification]
+    }))
   }
+
   render() {
     const {navigate} = this.props.navigation
+    const imageWidth = 1000
+    const imageHeight = 562
+    const windowWidth = Dimensions.get('window').width
+    const minScale = windowWidth/1000
 
     return (
       <View style={{
@@ -59,7 +49,40 @@ export default class ClassifyScreen extends React.Component {
             flex: 1
           }}
         >
-          <Text>Image</Text>
+          <ImageZoom
+            cropWidth={windowWidth}
+            cropHeight={260}
+            imageWidth={imageWidth}
+            imageHeight={imageHeight}
+            minScale={minScale}
+            enableCenterFocus={false}
+            centerOn={{x: 0, y: 0, scale: minScale}}
+            onClick={(e) => this.handleImageClick(e)}
+          >
+            <View>
+              <Image
+                source={classifyImage01}
+              />
+
+              <View
+                style={{
+                  position: 'absolute',
+                  width: imageWidth,
+                  height: imageHeight
+                }}
+              >
+                {
+                  this.state.classifications.map((classification) => (
+                    <Crosshair
+                      key={classification.id}
+                      xPos={classification.x}
+                      yPos={classification.y}
+                    />
+                  ))
+                }
+              </View>
+            </View>
+          </ImageZoom>
         </View>
 
         <View
@@ -83,7 +106,7 @@ export default class ClassifyScreen extends React.Component {
               </Text>
             </TouchableHighlight>
             <TouchableHighlight
-              onPress={() => console.log('clear')}
+              onPress={() => this.setState({classifications: []})}
               underlayColor='white'
             >
               <Text style={styles.redButtons}>
@@ -190,3 +213,40 @@ export default class ClassifyScreen extends React.Component {
     )
   }
 }
+
+const styles = StyleSheet.create({
+  redButtons: {
+    color: 'red',
+    padding: 16,
+    textDecorationLine: 'underline'
+  },
+  saveButtons: {
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    margin: 4,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  saveButtonsText: {
+    color: 'white',
+    fontSize: 24
+  },
+  classifierButtons: {
+    flex: 1,
+    height: 80,
+    backgroundColor: 'gray',
+    margin: 2,
+    justifyContent: 'flex-end',
+    borderWidth: 2,
+    borderColor: 'gray'
+  },
+  classifierButtonsTextContainer: {
+    padding: 4,
+    backgroundColor: 'rgba(0,0,0,0.3)'
+  },
+  classifierButtonsText: {
+    color: 'white',
+    fontSize: 12
+  }
+})
