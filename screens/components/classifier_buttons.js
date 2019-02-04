@@ -10,6 +10,12 @@ const animalTypes = [
 ]
 
 export default class ClassifierButtons extends React.Component {
+  handleClassifierButtonClick = (animalType) => {
+    this.props.onClick({
+      currentClassificationType: animalType
+    })
+  }
+
   render() {
     return (
       <View
@@ -25,7 +31,7 @@ export default class ClassifierButtons extends React.Component {
             <ClassifierButton
               key={animalType}
               active={animalType === this.props.currentClassificationType}
-              onClick={() => this.props.onClick(animalType)}
+              onClick={() => this.handleClassifierButtonClick(animalType)}
               animalType={animalType}
               count={this.props.classificationTypeCount[animalType]}
             />

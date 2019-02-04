@@ -3,8 +3,29 @@ import { View, Dimensions, Image } from 'react-native'
 import classifyImage01 from '../images/classify01.jpg'
 import ImageZoom from 'react-native-image-pan-zoom'
 import Crosshair from './crosshair'
+import generateUUID from 'uuid/v4'
 
 export default class ClassificationImage extends React.Component {
+  handleImageClick = (e) => {
+    const currentClassificationType = this.props.currentClassificationType
+    const classificationTypeCount = this.props.classificationTypeCount
+
+    const newClassification = {
+      id: generateUUID(),
+      type: currentClassificationType,
+      x: e.locationX,
+      y: e.locationY
+    }
+
+    this.props.onClick({
+      classifications: [...this.props.classifications, newClassification],
+      classificationTypeCount: {
+        ...classificationTypeCount,
+        [currentClassificationType]: classificationTypeCount[currentClassificationType] + 1
+      }
+    })
+  }
+
   render() {
     const imageWidth = 1000
     const imageHeight = 562
@@ -26,7 +47,7 @@ export default class ClassificationImage extends React.Component {
           minScale={minScale}
           enableCenterFocus={false}
           centerOn={{x: 0, y: 0, scale: minScale}}
-          onClick={(e) => this.props.onClick(e)}
+          onClick={(e) => this.handleImageClick(e)}
         >
           <View>
             <Image

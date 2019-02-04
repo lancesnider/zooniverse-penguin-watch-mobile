@@ -5,7 +5,6 @@ import TalkAfter from './components/talk_after'
 import ClassificationImage from './components/classification_image'
 import SaveButtons from './components/save_buttons'
 import ClassifierButtons from './components/classifier_buttons'
-import generateUUID from 'uuid/v4'
 
 export default class ClassifyScreen extends Component {
   constructor(props) {
@@ -21,29 +20,6 @@ export default class ClassifyScreen extends Component {
         other: 0
       }
     }
-  }
-
-  handleImageClick = (e) => {
-    const newClassification = {
-      id: generateUUID(),
-      type: this.state.currentClassificationType,
-      x: e.locationX,
-      y: e.locationY
-    }
-
-    this.setState(prevState => ({
-      classifications: [...prevState.classifications, newClassification],
-      classificationTypeCount: {
-        ...prevState.classificationTypeCount,
-        [prevState.currentClassificationType]: prevState.classificationTypeCount[prevState.currentClassificationType] + 1
-      }
-    }))
-  }
-
-  handleClassifierButtonClick = (animalType) => {
-    this.setState({
-      currentClassificationType: animalType
-    })
   }
 
   handleTalkAfterPress = () => this.setState({
@@ -64,8 +40,10 @@ export default class ClassifyScreen extends Component {
         <NavigationMenu navigate={navigate} />
 
         <ClassificationImage
-          onClick={this.handleImageClick}
+          onClick={this.handleStateUpdate}
           classifications={this.state.classifications}
+          currentClassificationType={this.state.currentClassificationType}
+          classificationTypeCount={this.state.classificationTypeCount}
         />
 
         <View
@@ -108,7 +86,7 @@ export default class ClassifyScreen extends Component {
 
           <ClassifierButtons
             classificationTypeCount={this.state.classificationTypeCount}
-            onClick={this.handleClassifierButtonClick}
+            onClick={this.handleStateUpdate}
             currentClassificationType={this.state.currentClassificationType}
           />
 
