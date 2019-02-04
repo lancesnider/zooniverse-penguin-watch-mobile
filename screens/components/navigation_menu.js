@@ -1,19 +1,26 @@
 import React from 'react'
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, Image } from 'react-native'
+import logo from '../images/logo.jpg'
 
 export default class NavigationMenu extends React.Component {
   render() {
-
     return (
       <View
         style={{
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between',
-          padding: 16
+          padding: 8,
+          alignItems: 'center'
         }}
       >
-        <Text>Logo</Text>
+        <Image
+          source={logo}
+          style={{
+            width: 50,
+            height: 50
+          }}
+        />
         <View
           style={{
             display: 'flex',
@@ -21,15 +28,13 @@ export default class NavigationMenu extends React.Component {
           }}
         >
           <Button
-            title='Classify'
-            onPress={() => this.props.navigate('Home')}
-          />
-          <Button
             title='Tutorial'
+            color='#000'
             onPress={() => this.props.navigate('Tutorial')}
           />
           <Button
             title='Field guide'
+            color='#000'
             onPress={() => this.props.navigate('FieldGuide')}
           />
         </View>
