@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import { View, Text, TouchableHighlight, StyleSheet } from 'react-native'
 import NavigationMenu from './components/navigation_menu'
-import TalkAfter from './components/talk_after'
 import ClassificationImage from './components/classification_image'
 import SaveButtons from './components/save_buttons'
 import ClassifierButtons from './components/classifier_buttons'
@@ -10,7 +9,6 @@ export default class ClassifyScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      talkAfter: false,
       classifications: [],
       currentClassificationType: 'adult',
       classificationTypeCount: {
@@ -21,10 +19,6 @@ export default class ClassifyScreen extends Component {
       }
     }
   }
-
-  handleTalkAfterPress = () => this.setState({
-    talkAfter: !this.state.talkAfter
-  })
 
   handleDone = (tooManyToCount) => console.log(`Done - Too many to count: ${tooManyToCount}`)
 
@@ -88,11 +82,6 @@ export default class ClassifyScreen extends Component {
             classificationTypeCount={this.state.classificationTypeCount}
             onClick={this.handleStateUpdate}
             currentClassificationType={this.state.currentClassificationType}
-          />
-
-          <TalkAfter
-            checked={this.state.talkAfter}
-            onPress={this.handleTalkAfterPress}
           />
 
           <SaveButtons
