@@ -28,11 +28,6 @@ export default class NavigationMenu extends React.Component {
           }}
         >
           <Button
-            title='Classify'
-            color='#000'
-            onPress={() => this.props.navigate('Home')}
-          />
-          <Button
             title='Tutorial'
             color='#000'
             onPress={() => this.props.navigate('Tutorial')}
