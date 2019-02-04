@@ -3,6 +3,7 @@ import { View, Text } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import ClassifyScreen from './screens/classify_screen'
 import TutorialScreen from './screens/tutorial_screen'
+import TalkScreen from './screens/talk_screen'
 import FieldGuideScreen from './screens/field_guide_screen'
 
 const AppNavigator = createStackNavigator({
@@ -14,6 +15,9 @@ const AppNavigator = createStackNavigator({
   },
   FieldGuide: {
     screen: FieldGuideScreen
+  },
+  Talk: {
+    screen: TalkScreen
   }
 });
 
