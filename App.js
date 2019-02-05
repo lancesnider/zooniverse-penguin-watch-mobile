@@ -6,6 +6,9 @@ import TutorialScreen from './screens/tutorial_screen'
 import TalkScreen from './screens/talk_screen'
 import FieldGuideScreen from './screens/field_guide_screen'
 
+import { YellowBox } from 'react-native'
+YellowBox.ignoreWarnings(['Remote debugger'])
+
 const AppNavigator = createStackNavigator({
   Home: {
     screen: ClassifyScreen
