@@ -25,8 +25,6 @@ export default class TalkScreen extends React.Component {
               marginVertical: 12
             }}
             multiline={true}
-            // onChangeText={(text) => this.setState({text})}
-            // value={this.state.text}
           />
           <TouchableHighlight
             onPress={() => console.log('save')}
@@ -43,10 +41,9 @@ export default class TalkScreen extends React.Component {
                 color: 'white'
               }}
             >
-              Save
+              Post comment
             </Text>
           </TouchableHighlight>
-          <Text>This comment will be posted when you finish the classification</Text>
         </View>
       </View>
     )
