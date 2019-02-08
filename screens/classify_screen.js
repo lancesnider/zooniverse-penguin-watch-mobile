@@ -27,6 +27,24 @@ export default class ClassifyScreen extends Component {
     }
   }
 
+  handleUndo = () => {
+    if (this.state.classifications.length === 0) return
+
+    const lastClassificationType = this.state.classifications[this.state.classifications.length - 1].type
+    const newCount = this.state.classificationTypeCount[lastClassificationType] - 1
+
+    const newClassifications = this.state.classifications
+    newClassifications.pop()
+
+    this.setState({
+      classifications: newClassifications,
+      classificationTypeCount: {
+        ...this.state.classificationTypeCount,
+        [lastClassificationType]: newCount < 0 ? 0 : newCount
+      }
+    })
+  }
+
   handleDone = () => this.setState({
     finishClassificationScreen: true
   })
@@ -66,20 +84,35 @@ export default class ClassifyScreen extends Component {
             height: 210
           }}
         >
-          <TouchableHighlight
-            onPress={() => this.setState({
-              classifications: [],
-              classificationTypeCount: emptyClassifications
-            })}
+          <View
             style={{
-              width: 130
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between'
             }}
-            underlayColor='white'
           >
-            <Text style={styles.redButtons}>
-              clear all marks
-            </Text>
-          </TouchableHighlight>
+
+            <TouchableHighlight
+              onPress={() => this.setState({
+                classifications: [],
+                classificationTypeCount: emptyClassifications
+              })}
+              underlayColor='white'
+            >
+              <Text style={styles.redButtons}>
+                clear all marks
+              </Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              onPress={this.handleUndo}
+              underlayColor='white'
+            >
+              <Text style={styles.redButtons}>
+                undo
+              </Text>
+            </TouchableHighlight>
+          </View>
 
           <ClassifierButtons
             classificationTypeCount={this.state.classificationTypeCount}
@@ -112,7 +145,7 @@ const styles = StyleSheet.create({
   redButtons: {
     color: 'red',
     paddingVertical: 12,
-    paddingLeft: 16,
+    paddingHorizontal: 16,
     textDecorationLine: 'underline'
   }
 })
