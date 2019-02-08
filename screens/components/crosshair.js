@@ -1,15 +1,43 @@
 import React from 'react'
-import { View } from 'react-native'
+import { View, Animated, Easing } from 'react-native'
 import {animalTypeColors} from '../constants/animal_type_constants'
 
 export default class Crosshair extends React.Component {
+  state = {
+    crosshairOpacity: new Animated.Value(0),
+    crosshairScale: new Animated.Value(0)
+  }
+
+  componentDidMount () {
+    Animated.parallel([
+      Animated.timing(
+        this.state.crosshairOpacity, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true
+        }
+      ),
+      Animated.timing(
+        this.state.crosshairScale, {
+          toValue: 1,
+          duration: 200,
+          useNativeDriver: true,
+          easing: Easing.in(Easing.back())
+        }
+      )
+    ]).start()
+  }
+
   render() {
+    let { crosshairOpacity, crosshairScale } = this.state
     const classification = this.props.classification
+
     return (
-      <View
+      <Animated.View
         style={{
           left: classification.x,
-          top: classification.y
+          top: classification.y,
+          opacity: crosshairOpacity
         }}
       >
         <View
@@ -24,7 +52,7 @@ export default class Crosshair extends React.Component {
             borderRadius: 20
           }}
         />
-      </View>
+      </Animated.View>
     )
   }
 }

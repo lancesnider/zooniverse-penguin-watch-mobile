@@ -1,13 +1,33 @@
 import React from 'react'
-import { View, StyleSheet, TouchableHighlight, Text } from 'react-native'
+import { View, StyleSheet, TouchableHighlight, Text, Animated, Easing } from 'react-native'
 import { CheckBox } from 'react-native-elements'
 import DoneButton from './done_button'
 
 export default class FinishClassification extends React.Component {
+  state = {
+    menuTransform: new Animated.ValueXY({x: 0, y: 210})
+  }
+
+  componentDidMount () {
+    Animated.timing(
+      this.state.menuTransform, {
+        toValue: {
+          x: 0,
+          y: 0
+        },
+        duration: 350,
+        easing: Easing.out(Easing.back()),
+        useNativeDriver: true
+      }
+    ).start()
+  }
+
   render() {
+    let { menuTransform } = this.state
     return (
-      <View
+      <Animated.View
         style={{
+          transform: this.state.menuTransform.getTranslateTransform(),
           width: '100%',
           height: 210,
           backgroundColor: 'white',
@@ -72,7 +92,7 @@ export default class FinishClassification extends React.Component {
         >
           I've marked all the animals
         </DoneButton>
-      </View>
+      </Animated.View>
     )
   }
 }
