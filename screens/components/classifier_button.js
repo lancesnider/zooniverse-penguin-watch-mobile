@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, TouchableHighlight, Text, StyleSheet } from 'react-native'
-import {animalTypeColors} from '../constants/animal_type_constants'
+import { View, TouchableHighlight, Text, StyleSheet, Image } from 'react-native'
+import { animalTypeColors } from '../constants/animal_type_constants'
 
 export default class ClassifierButton extends React.Component {
-  render() {
+  render () {
+    console.log(this.props.animalImage)
     return (
       <TouchableHighlight
         style={{
@@ -15,10 +16,28 @@ export default class ClassifierButton extends React.Component {
         onPress={() => this.props.onClick(this.props.animalType)}
         underlayColor='white'
       >
-        <View style={styles.classifierButtonsTextContainer}>
-          <Text style={styles.classifierButtonsText}>
-            {this.props.animalType} ({this.props.count})
-          </Text>
+        <View
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            width: '100%',
+            height: '100%'
+          }}
+        >
+          <Image
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              resizeMode: 'cover'
+            }}
+            source={this.props.animalImage}
+          />
+          <View style={styles.classifierButtonsTextContainer}>
+            <Text style={styles.classifierButtonsText}>
+              {this.props.animalType} ({this.props.count})
+            </Text>
+          </View>
         </View>
       </TouchableHighlight>
     )
@@ -30,9 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 80,
     margin: 2,
-    justifyContent: 'flex-end',
-    borderWidth: 3,
-    backgroundColor: 'gray'
+    borderWidth: 3
   },
   classifierButtonsTextContainer: {
     padding: 4,
@@ -43,4 +60,3 @@ const styles = StyleSheet.create({
     fontSize: 12
   }
 })
-

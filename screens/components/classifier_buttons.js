@@ -1,6 +1,10 @@
 import React from 'react'
 import { View } from 'react-native'
 import ClassifierButton from './classifier_button'
+import adultImage from '../images/adult.jpg'
+import chickImage from '../images/chick.jpg'
+import eggImage from '../images/egg.jpg'
+import otherImage from '../images/other.jpg'
 
 const animalTypes = [
   'adult',
@@ -8,6 +12,13 @@ const animalTypes = [
   'egg',
   'other'
 ]
+
+const animalImages = {
+  adult: adultImage,
+  chick: chickImage,
+  egg: eggImage,
+  other: otherImage,
+}
 
 export default class ClassifierButtons extends React.Component {
   handleClassifierButtonClick = (animalType) => {
@@ -29,6 +40,7 @@ export default class ClassifierButtons extends React.Component {
         {
           animalTypes.map((animalType) => (
             <ClassifierButton
+              animalImage={animalImages[animalType]}
               key={animalType}
               active={animalType === this.props.currentClassificationType}
               onClick={() => this.handleClassifierButtonClick(animalType)}
