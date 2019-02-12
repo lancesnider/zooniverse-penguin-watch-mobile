@@ -11,6 +11,7 @@ export default class NavigationMenu extends React.Component {
           flexDirection: 'row',
           justifyContent: 'space-between',
           padding: 8,
+          marginTop: 32,
           alignItems: 'center'
         }}
       >
@@ -29,17 +30,14 @@ export default class NavigationMenu extends React.Component {
         >
           <Button
             title='Talk'
-            color='#000'
             onPress={() => this.props.navigate('Talk')}
           />
           <Button
             title='Tutorial'
-            color='#000'
             onPress={() => this.props.navigate('Tutorial')}
           />
           <Button
             title='Field guide'
-            color='#000'
             onPress={() => this.props.navigate('FieldGuide')}
           />
         </View>

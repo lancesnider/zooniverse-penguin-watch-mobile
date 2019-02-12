@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, TouchableHighlight, Text, StyleSheet } from 'react-native'
+import {animalTypeColors} from '../constants/animal_type_constants'
 
 export default class ClassifierButton extends React.Component {
   render() {
@@ -7,9 +8,12 @@ export default class ClassifierButton extends React.Component {
       <TouchableHighlight
         style={{
           ...styles.classifierButtons,
-          borderColor: this.props.active ? 'blue' : 'gray'
+          borderColor: this.props.active
+            ? animalTypeColors[this.props.animalType]
+            : 'gray'
         }}
         onPress={() => this.props.onClick(this.props.animalType)}
+        underlayColor='white'
       >
         <View style={styles.classifierButtonsTextContainer}>
           <Text style={styles.classifierButtonsText}>
@@ -27,7 +31,7 @@ const styles = StyleSheet.create({
     height: 80,
     margin: 2,
     justifyContent: 'flex-end',
-    borderWidth: 2,
+    borderWidth: 3,
     backgroundColor: 'gray'
   },
   classifierButtonsTextContainer: {

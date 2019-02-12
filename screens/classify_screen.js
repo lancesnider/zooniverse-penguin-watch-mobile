@@ -1,26 +1,63 @@
 import React, {Component} from 'react'
-import { View, Text, TouchableHighlight, StyleSheet } from 'react-native'
+import { View, Text, TouchableHighlight, StyleSheet, asdf } from 'react-native'
 import NavigationMenu from './components/navigation_menu'
 import ClassificationImage from './components/classification_image'
-import SaveButtons from './components/save_buttons'
+import DoneButton from './components/done_button'
 import ClassifierButtons from './components/classifier_buttons'
+import FinishClassification from './components/finish_classification'
+
+const emptyClassifications = {
+  adult: 0,
+  chick: 0,
+  egg: 0,
+  other: 0
+}
 
 export default class ClassifyScreen extends Component {
+
+  static navigationOptions = { header: null }
+
   constructor(props) {
     super(props)
     this.state = {
       classifications: [],
       currentClassificationType: 'adult',
-      classificationTypeCount: {
-        adult: 0,
-        chick: 0,
-        egg: 0,
-        other: 0
-      }
+      classificationTypeCount: emptyClassifications,
+      finishClassificationScreen: false
     }
   }
 
-  handleDone = (tooManyToCount) => console.log(`Done - Too many to count: ${tooManyToCount}`)
+  handleUndo = () => {
+    if (this.state.classifications.length === 0) return
+
+    const lastClassificationType = this.state.classifications[this.state.classifications.length - 1].type
+    const newCount = this.state.classificationTypeCount[lastClassificationType] - 1
+
+    const newClassifications = this.state.classifications
+    newClassifications.pop()
+
+    this.setState({
+      classifications: newClassifications,
+      classificationTypeCount: {
+        ...this.state.classificationTypeCount,
+        [lastClassificationType]: newCount < 0 ? 0 : newCount
+      }
+    })
+  }
+
+  handleDone = () => this.setState({
+    finishClassificationScreen: true
+  })
+
+  handleBack = () => this.setState({
+    finishClassificationScreen: false
+  })
+
+  handleVerifyDone = () => this.setState({
+    finishClassificationScreen: false,
+    classifications: [],
+    classificationTypeCount: emptyClassifications
+  })
 
   handleStateUpdate = (newState) => this.setState(newState)
 
@@ -38,11 +75,13 @@ export default class ClassifyScreen extends Component {
           classifications={this.state.classifications}
           currentClassificationType={this.state.currentClassificationType}
           classificationTypeCount={this.state.classificationTypeCount}
+          finishClassificationScreen={this.state.finishClassificationScreen}
         />
 
         <View
           style={{
-            backgroundColor: 'white'
+            backgroundColor: 'white',
+            height: 210
           }}
         >
           <View
@@ -52,28 +91,25 @@ export default class ClassifyScreen extends Component {
               justifyContent: 'space-between'
             }}
           >
-            <TouchableHighlight
-              onPress={() => console.log('clear')}
-              underlayColor='white'
-            >
-              <Text style={styles.redButtons}>
-                Image is too dark or blurry
-              </Text>
-            </TouchableHighlight>
+
             <TouchableHighlight
               onPress={() => this.setState({
                 classifications: [],
-                classificationTypeCount: {
-                  adult: 0,
-                  chick: 0,
-                  egg: 0,
-                  other: 0
-                }
+                classificationTypeCount: emptyClassifications
               })}
               underlayColor='white'
             >
               <Text style={styles.redButtons}>
                 clear all marks
+              </Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              onPress={this.handleUndo}
+              underlayColor='white'
+            >
+              <Text style={styles.redButtons}>
+                undo
               </Text>
             </TouchableHighlight>
           </View>
@@ -84,10 +120,22 @@ export default class ClassifyScreen extends Component {
             currentClassificationType={this.state.currentClassificationType}
           />
 
-          <SaveButtons
+          <DoneButton
             onPress={this.handleDone}
-          />
+            color='blue'
+          >
+            Done
+          </DoneButton>
         </View>
+
+        {
+          this.state.finishClassificationScreen ? (
+            <FinishClassification
+              onDone={this.handleVerifyDone}
+              onBack={this.handleBack}
+            />
+          ) : null
+        }
       </View>
     )
   }
@@ -96,7 +144,8 @@ export default class ClassifyScreen extends Component {
 const styles = StyleSheet.create({
   redButtons: {
     color: 'red',
-    padding: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     textDecorationLine: 'underline'
   }
 })
