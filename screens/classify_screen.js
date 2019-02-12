@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { View, Text, TouchableHighlight, StyleSheet } from 'react-native'
+import { View, Text, TouchableHighlight, StyleSheet, asdf } from 'react-native'
 import NavigationMenu from './components/navigation_menu'
 import ClassificationImage from './components/classification_image'
 import DoneButton from './components/done_button'

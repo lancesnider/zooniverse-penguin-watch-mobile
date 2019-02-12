@@ -6,6 +6,7 @@ import Crosshair from './crosshair'
 import generateUUID from 'uuid/v4'
 
 export default class ClassificationImage extends React.Component {
+
   handleImageClick = (e) => {
     // Don't allow classifications from the verification screen
     if (this.props.finishClassificationScreen) return

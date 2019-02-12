@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Animated, Easing } from 'react-native'
+import { View, Animated, Easing, TouchableHighlight } from 'react-native'
 import {animalTypeColors} from '../constants/animal_type_constants'
 
 export default class Crosshair extends React.Component {
@@ -33,26 +33,31 @@ export default class Crosshair extends React.Component {
     const classification = this.props.classification
 
     return (
-      <Animated.View
-        style={{
-          left: classification.x,
-          top: classification.y,
-          opacity: crosshairOpacity
-        }}
+      <TouchableHighlight
+        onPress={() => console.log('crosshair')}
+        underlayColor='white'
       >
-        <View
+        <Animated.View
           style={{
-            position: 'absolute',
-            width: 40,
-            height: 40,
-            top: -20,
-            left: -20,
-            borderWidth: 3,
-            borderColor: animalTypeColors[classification.type],
-            borderRadius: 20
+            left: classification.x,
+            top: classification.y,
+            opacity: crosshairOpacity
           }}
-        />
-      </Animated.View>
+        >
+          <View
+            style={{
+              position: 'absolute',
+              width: 40,
+              height: 40,
+              top: -20,
+              left: -20,
+              borderWidth: 3,
+              borderColor: animalTypeColors[classification.type],
+              borderRadius: 20
+            }}
+          />
+        </Animated.View>
+      </TouchableHighlight>
     )
   }
 }
